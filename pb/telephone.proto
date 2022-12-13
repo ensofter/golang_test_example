@@ -1,2 +1,50 @@
 syntax = "proto3";
-option go_package = ""
+option go_package = "github.com/ensofter/golang_test_example/pb";
+
+package pb;
+
+service Telephone {
+  rpc GetContact(GetContactRequest) returns (GetContactResponse);
+  rpc ListContacts(ListContactsRequest) returns (stream ListContactsResponse);
+  rpc RecordCallHistrory(stream RecordCallHistoryRequest) returns (RecordCallHistoryResponse);
+  rpc SendMessage(stream SendMessageRequest) returns (stream SendMessageResponse);
+}
+
+message GetContactRequest {
+  string number = 1;
+}
+
+message GetContactResponse {
+  string name = 1;
+  string lastname = 2;
+  string number = 3;
+}
+
+message ListContactsRequest{}
+
+message ListContactsResponse {
+  string name = 1;
+  string lastname = 2;
+  string number = 3;
+}
+
+message RecordCallHistoryRequest {
+  string number = 1;
+}
+
+message RecordCallHistoryResponse {
+  int32 call_count = 1;
+  int32 elapsed_time = 2;
+}
+
+message SendMessageRequest {
+  bytes msg = 1;
+}
+
+message SendMessageResponse {
+  bytes msg = 1;
+}
+
+
+
+
