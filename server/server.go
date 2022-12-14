@@ -27,7 +27,6 @@ func (t *telephoneServer) GetContact(ctx context.Context, telNum *pb.GetContactR
 	if len(telNum.Number) != 11 || telNum.Number == "" || err != nil {
 		return &pb.GetContactResponse{}, errors.New("invalid number")
 	}
-
 	for _, c := range t.contacts {
 		if telNum.Number == c.Number {
 			return &pb.GetContactResponse{
@@ -82,12 +81,10 @@ func (t *telephoneServer) SendMessage(stream pb.Telephone_SendMessageServer) err
 			}
 			return err
 		}
-
 		t.calls = append(t.calls, string(rec.Msg))
 
 		if t.calls[len(t.calls)-1] == "." {
 			for _, m := range t.calls {
-				//time.Sleep(time.Second)
 				switch m {
 				case ".":
 				case "Hi!":
@@ -110,7 +107,6 @@ func (t *telephoneServer) SendMessage(stream pb.Telephone_SendMessageServer) err
 			}
 			t.calls = t.calls[:0]
 		}
-
 	}
 }
 
@@ -119,17 +115,17 @@ func (t *telephoneServer) loadContact() {
 		{
 			Name:     "Nukhet",
 			Lastname: "Duru",
-			Number:   "111111",
+			Number:   "11111111111",
 		},
 		{
 			Name:     "Zeki",
 			Lastname: "Muren",
-			Number:   "2222222",
+			Number:   "22222222222",
 		},
 		{
 			Name:     "Sebnew",
 			Lastname: "Ferah",
-			Number:   "333333333",
+			Number:   "33333333333",
 		},
 	}
 }

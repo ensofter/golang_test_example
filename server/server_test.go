@@ -9,10 +9,10 @@ import (
 	"net"
 	"testing"
 
-	"github.com/3n0ugh/grpc-test-sample/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
+	"grpc_test_example/pb"
 )
 
 func server(ctx context.Context) (pb.TelephoneClient, func()) {
@@ -55,7 +55,7 @@ func TestTelephoneServer_GetContact(t *testing.T) {
 	defer closer()
 
 	type expectation struct {
-		out *pb.GetContactReply
+		out *pb.GetContactResponse
 		err error
 	}
 
@@ -68,7 +68,7 @@ func TestTelephoneServer_GetContact(t *testing.T) {
 				Number: "33333333333",
 			},
 			expected: expectation{
-				out: &pb.GetContactReply{
+				out: &pb.GetContactResponse{
 					Name:     "Sebnem",
 					Lastname: "Ferah",
 					Number:   "33333333333",
@@ -81,7 +81,7 @@ func TestTelephoneServer_GetContact(t *testing.T) {
 				Number: "44444444444",
 			},
 			expected: expectation{
-				out: &pb.GetContactReply{},
+				out: &pb.GetContactResponse{},
 				err: errors.New("rpc error: code = Unknown desc = no contact found"),
 			},
 		},
@@ -90,7 +90,7 @@ func TestTelephoneServer_GetContact(t *testing.T) {
 				Number: "",
 			},
 			expected: expectation{
-				out: &pb.GetContactReply{},
+				out: &pb.GetContactResponse{},
 				err: errors.New("rpc error: code = Unknown desc = invalid number"),
 			},
 		},
@@ -99,7 +99,7 @@ func TestTelephoneServer_GetContact(t *testing.T) {
 				Number: "test",
 			},
 			expected: expectation{
-				out: &pb.GetContactReply{},
+				out: &pb.GetContactResponse{},
 				err: errors.New("rpc error: code = Unknown desc = invalid number"),
 			},
 		},
@@ -108,7 +108,7 @@ func TestTelephoneServer_GetContact(t *testing.T) {
 				Number: "333333333",
 			},
 			expected: expectation{
-				out: &pb.GetContactReply{},
+				out: &pb.GetContactResponse{},
 				err: errors.New("rpc error: code = Unknown desc = invalid number"),
 			},
 		},
@@ -117,7 +117,7 @@ func TestTelephoneServer_GetContact(t *testing.T) {
 				Number: "3333333333333",
 			},
 			expected: expectation{
-				out: &pb.GetContactReply{},
+				out: &pb.GetContactResponse{},
 				err: errors.New("rpc error: code = Unknown desc = invalid number"),
 			},
 		},
@@ -149,7 +149,7 @@ func TestTelephoneServer_ListContacts(t *testing.T) {
 	defer closer()
 
 	type expectation struct {
-		out []*pb.ListContactsReply
+		out []*pb.ListContactsResponse
 		err error
 	}
 
@@ -160,7 +160,7 @@ func TestTelephoneServer_ListContacts(t *testing.T) {
 		"Must_Success": {
 			in: &pb.ListContactsRequest{},
 			expected: expectation{
-				out: []*pb.ListContactsReply{
+				out: []*pb.ListContactsResponse{
 					{
 						Name:     "Nukhet",
 						Lastname: "Duru",
@@ -186,7 +186,7 @@ func TestTelephoneServer_ListContacts(t *testing.T) {
 		t.Run(scenario, func(t *testing.T) {
 			out, err := client.ListContacts(ctx, tt.in)
 
-			var outs []*pb.ListContactsReply
+			var outs []*pb.ListContactsResponse
 
 			for {
 				o, err := out.Recv()
@@ -223,7 +223,7 @@ func TestTelephoneServer_RecordCallHistory(t *testing.T) {
 	defer closer()
 
 	type expectation struct {
-		out *pb.RecordCallHistoryReply
+		out *pb.RecordCallHistoryResponse
 		err error
 	}
 
@@ -244,7 +244,7 @@ func TestTelephoneServer_RecordCallHistory(t *testing.T) {
 				},
 			},
 			expected: expectation{
-				out: &pb.RecordCallHistoryReply{
+				out: &pb.RecordCallHistoryResponse{
 					CallCount: 3,
 				},
 				err: nil,
@@ -253,7 +253,7 @@ func TestTelephoneServer_RecordCallHistory(t *testing.T) {
 		"Empty_Request": {
 			in: []*pb.RecordCallHistoryRequest{},
 			expected: expectation{
-				out: &pb.RecordCallHistoryReply{
+				out: &pb.RecordCallHistoryResponse{
 					CallCount: 0,
 				},
 				err: nil,
@@ -299,7 +299,7 @@ func TestTelephoneServer_SendMessage(t *testing.T) {
 	defer closer()
 
 	type expectation struct {
-		out []*pb.SendMessageReply
+		out []*pb.SendMessageResponse
 		err error
 	}
 
@@ -323,7 +323,7 @@ func TestTelephoneServer_SendMessage(t *testing.T) {
 				},
 			},
 			expected: expectation{
-				out: []*pb.SendMessageReply{
+				out: []*pb.SendMessageResponse{
 					{
 						Msg: []byte("Hello!"),
 					},
@@ -353,7 +353,7 @@ func TestTelephoneServer_SendMessage(t *testing.T) {
 				t.Errorf("Err -> %q", err)
 			}
 
-			var outs []*pb.SendMessageReply
+			var outs []*pb.SendMessageResponse
 			for {
 				o, err := outClient.Recv()
 				if errors.Is(err, io.EOF) {
