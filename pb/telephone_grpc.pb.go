@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type TelephoneClient interface {
 	GetContact(ctx context.Context, in *GetContactRequest, opts ...grpc.CallOption) (*GetContactResponse, error)
 	ListContacts(ctx context.Context, in *ListContactsRequest, opts ...grpc.CallOption) (Telephone_ListContactsClient, error)
-	RecordCallHistrory(ctx context.Context, opts ...grpc.CallOption) (Telephone_RecordCallHistroryClient, error)
+	RecordCallHistory(ctx context.Context, opts ...grpc.CallOption) (Telephone_RecordCallHistoryClient, error)
 	SendMessage(ctx context.Context, opts ...grpc.CallOption) (Telephone_SendMessageClient, error)
 }
 
@@ -77,30 +77,30 @@ func (x *telephoneListContactsClient) Recv() (*ListContactsResponse, error) {
 	return m, nil
 }
 
-func (c *telephoneClient) RecordCallHistrory(ctx context.Context, opts ...grpc.CallOption) (Telephone_RecordCallHistroryClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Telephone_ServiceDesc.Streams[1], "/pb.Telephone/RecordCallHistrory", opts...)
+func (c *telephoneClient) RecordCallHistory(ctx context.Context, opts ...grpc.CallOption) (Telephone_RecordCallHistoryClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Telephone_ServiceDesc.Streams[1], "/pb.Telephone/RecordCallHistory", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &telephoneRecordCallHistroryClient{stream}
+	x := &telephoneRecordCallHistoryClient{stream}
 	return x, nil
 }
 
-type Telephone_RecordCallHistroryClient interface {
+type Telephone_RecordCallHistoryClient interface {
 	Send(*RecordCallHistoryRequest) error
 	CloseAndRecv() (*RecordCallHistoryResponse, error)
 	grpc.ClientStream
 }
 
-type telephoneRecordCallHistroryClient struct {
+type telephoneRecordCallHistoryClient struct {
 	grpc.ClientStream
 }
 
-func (x *telephoneRecordCallHistroryClient) Send(m *RecordCallHistoryRequest) error {
+func (x *telephoneRecordCallHistoryClient) Send(m *RecordCallHistoryRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *telephoneRecordCallHistroryClient) CloseAndRecv() (*RecordCallHistoryResponse, error) {
+func (x *telephoneRecordCallHistoryClient) CloseAndRecv() (*RecordCallHistoryResponse, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
@@ -148,7 +148,7 @@ func (x *telephoneSendMessageClient) Recv() (*SendMessageResponse, error) {
 type TelephoneServer interface {
 	GetContact(context.Context, *GetContactRequest) (*GetContactResponse, error)
 	ListContacts(*ListContactsRequest, Telephone_ListContactsServer) error
-	RecordCallHistrory(Telephone_RecordCallHistroryServer) error
+	RecordCallHistory(Telephone_RecordCallHistoryServer) error
 	SendMessage(Telephone_SendMessageServer) error
 	mustEmbedUnimplementedTelephoneServer()
 }
@@ -163,8 +163,8 @@ func (UnimplementedTelephoneServer) GetContact(context.Context, *GetContactReque
 func (UnimplementedTelephoneServer) ListContacts(*ListContactsRequest, Telephone_ListContactsServer) error {
 	return status.Errorf(codes.Unimplemented, "method ListContacts not implemented")
 }
-func (UnimplementedTelephoneServer) RecordCallHistrory(Telephone_RecordCallHistroryServer) error {
-	return status.Errorf(codes.Unimplemented, "method RecordCallHistrory not implemented")
+func (UnimplementedTelephoneServer) RecordCallHistory(Telephone_RecordCallHistoryServer) error {
+	return status.Errorf(codes.Unimplemented, "method RecordCallHistory not implemented")
 }
 func (UnimplementedTelephoneServer) SendMessage(Telephone_SendMessageServer) error {
 	return status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
@@ -221,25 +221,25 @@ func (x *telephoneListContactsServer) Send(m *ListContactsResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _Telephone_RecordCallHistrory_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(TelephoneServer).RecordCallHistrory(&telephoneRecordCallHistroryServer{stream})
+func _Telephone_RecordCallHistory_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(TelephoneServer).RecordCallHistory(&telephoneRecordCallHistoryServer{stream})
 }
 
-type Telephone_RecordCallHistroryServer interface {
+type Telephone_RecordCallHistoryServer interface {
 	SendAndClose(*RecordCallHistoryResponse) error
 	Recv() (*RecordCallHistoryRequest, error)
 	grpc.ServerStream
 }
 
-type telephoneRecordCallHistroryServer struct {
+type telephoneRecordCallHistoryServer struct {
 	grpc.ServerStream
 }
 
-func (x *telephoneRecordCallHistroryServer) SendAndClose(m *RecordCallHistoryResponse) error {
+func (x *telephoneRecordCallHistoryServer) SendAndClose(m *RecordCallHistoryResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *telephoneRecordCallHistroryServer) Recv() (*RecordCallHistoryRequest, error) {
+func (x *telephoneRecordCallHistoryServer) Recv() (*RecordCallHistoryRequest, error) {
 	m := new(RecordCallHistoryRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -292,8 +292,8 @@ var Telephone_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 		{
-			StreamName:    "RecordCallHistrory",
-			Handler:       _Telephone_RecordCallHistrory_Handler,
+			StreamName:    "RecordCallHistory",
+			Handler:       _Telephone_RecordCallHistory_Handler,
 			ClientStreams: true,
 		},
 		{

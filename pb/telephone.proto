@@ -6,7 +6,7 @@ package pb;
 service Telephone {
   rpc GetContact(GetContactRequest) returns (GetContactResponse);
   rpc ListContacts(ListContactsRequest) returns (stream ListContactsResponse);
-  rpc RecordCallHistrory(stream RecordCallHistoryRequest) returns (RecordCallHistoryResponse);
+  rpc RecordCallHistory(stream RecordCallHistoryRequest) returns (RecordCallHistoryResponse);
   rpc SendMessage(stream SendMessageRequest) returns (stream SendMessageResponse);
 }
 
